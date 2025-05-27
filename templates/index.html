@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Cobertura da Documentação - Segura</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Análise de cobertura da documentação - Segura - 2025</h1>
+        <p>Esta ferramenta permite analisar a cobertura da documentação existente, identificando lacunas e sugerindo melhorias.</p>
+        <p><h3><center><a href="/gartner/templates/help.html">Ajuda com a ferramenta.</a></h3></center></p>
+        <form id="coverageForm">
+            <label for="query">Digite o tópico ou cole o texto para análise de cobertura:</label>
+            <textarea id="query" name="query" placeholder="Ex: Funcionalidades de JIT, Integração com Azure AD ou cole um bloco de texto grande aqui..." required></textarea>
+            <button type="submit">Analisar cobertura da documentação</button>
+        </form>
+        <div class="response-container">
+            <div class="response-content" id="responseArea">
+                Digite um tópico e clique em "Analisar Cobertura" para obter sugestões de melhoria para sua documentação.
+            </div>
+            <div id="relevantDocsArea" class="relevant-docs-section" style="display:none;">
+                <h3>Documentos relevantes utilizados:</h3>
+                <div id="docsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('coverageForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const query = document.getElementById('query').value;
+            const responseArea = document.getElementById('responseArea');
+            const relevantDocsArea = document.getElementById('relevantDocsArea');
+            const docsList = document.getElementById('docsList'); 
+
+            responseArea.innerHTML = '<div class="loading">Aguarde... Analisando cobertura...</div>';
+            responseArea.style.color = '#334e68';
+            relevantDocsArea.style.display = 'none';
+            docsList.innerHTML = '';
+
+            try {
+                const response = await fetch('/analyze_coverage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseArea.innerHTML = data.response_text;
+                    
+                    if (data.relevant_docs_info && data.relevant_docs_info.length > 0) {
+                        relevantDocsArea.style.display = 'block';
+                        data.relevant_docs_info.forEach(doc => {
+                            const docItem = document.createElement('div');
+                            docItem.classList.add('doc-item');
+                            docItem.innerHTML = `
+                                <p><strong>Título:</strong> ${doc.title || 'N/A'}</p>
+                                <p><strong>Slug:</strong> <a href="https://docs.senhasegura.io/v4/docs/${doc.slug || 'N/A'}">${doc.slug || 'N/A'}</a></p>
+                                <p><strong>Relevância:</strong> ${doc.relevance || 'N/A'}</p>
+                            `;
+                            docsList.appendChild(docItem);
+                        });
+                    } else {
+                        relevantDocsArea.style.display = 'none';
+                    }
+
+                } else {
+                    responseArea.innerHTML = '<div class="error">Erro: ' + (data.error || 'Ocorreu um erro desconhecido.') + '</div>';
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                responseArea.innerHTML = '<div class="error">Erro na requisição: Não foi possível conectar ao servidor.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

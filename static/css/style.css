@@ -1,0 +1,215 @@
+/* static/css/style.css - Versão Moderna e Sóbria */
+
+:root {
+    /* Paleta de Cores Sóbrias */
+    --primary-blue: #345995;      /* Azul principal mais profundo */
+    --light-blue: #97b5e4;        /* Azul claro para detalhes */
+    --background-light: #f7f9fc;  /* Fundo muito claro, quase branco */
+    --surface-white: #ffffff;     /* Fundo de containers */
+    --text-dark: #2c3e50;         /* Texto escuro */
+    --text-medium: #546a7e;       /* Texto cinza médio */
+    --border-light: #e0e6ed;      /* Borda sutil */
+    --shadow-light: rgba(0, 0, 0, 0.05); /* Sombra suave */
+    --shadow-medium: rgba(0, 0, 0, 0.1); /* Sombra um pouco mais forte */
+    --accent-green: #28a745;      /* Verde para sucesso/botões secundários */
+    --accent-red: #dc3545;        /* Vermelho para erros */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 30px 20px; /* Mais padding superior/inferior */
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    background-color: var(--surface-white);
+    padding: 40px; /* Mais padding interno */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px var(--shadow-medium); /* Sombra mais pronunciada e moderna */
+    margin-top: 20px; /* Um pouco menos de margem superior se o body já tem padding */
+}
+
+h1 {
+    color: var(--primary-blue);
+    text-align: center;
+    margin-bottom: 40px; /* Mais espaçamento */
+    font-weight: 700;
+    letter-spacing: -0.8px; /* Ajuste sutil no espaçamento de letras */
+    font-size: 2.2rem; /* Título maior */
+}
+
+h2 {
+    color: var(--primary-blue);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+
+h3 {
+    color: var(--primary-blue);
+    margin-top: 25px;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+p {
+    line-height: 1.7; /* Aumenta a altura da linha para melhor legibilidade */
+    margin-bottom: 12px;
+    color: var(--text-medium);
+}
+
+label {
+    display: block;
+    margin-bottom: 12px; /* Mais espaçamento */
+    font-weight: 600; /* Um pouco mais encorpado que bold */
+    color: var(--text-medium);
+    font-size: 1.05rem;
+}
+
+textarea {
+    width: calc(100% - 24px); /* Ajuste para padding e borda */
+    padding: 15px; /* Mais padding */
+    margin-bottom: 30px; /* Mais espaçamento */
+    border: 1px solid var(--border-light);
+    border-radius: 8px; /* Borda mais arredondada */
+    font-size: 1.05rem;
+    box-shadow: inset 0 2px 5px var(--shadow-light); /* Sombra interna mais visível */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    min-height: 180px; /* Altura mínima ainda maior */
+    resize: vertical;
+    color: var(--text-dark); /* Cor do texto no textarea */
+}
+textarea:focus {
+    border-color: var(--light-blue);
+    outline: none; /* Remover outline padrão */
+    box-shadow: 0 0 0 0.25rem rgba(52, 89, 149, 0.25); /* Sombra de foco com cor primária */
+}
+
+button {
+    background-color: var(--primary-blue);
+    color: var(--surface-white);
+    padding: 14px 25px; /* Mais padding */
+    border: none;
+    border-radius: 8px; /* Borda mais arredondada */
+    cursor: pointer;
+    font-size: 1.15rem; /* Fonte um pouco maior */
+    font-weight: 700;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out, transform 0.15s ease, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra no botão */
+}
+button:hover {
+    background-color: #2a4e85; /* Tom um pouco mais escuro ao hover */
+    transform: translateY(-3px); /* Efeito de elevação mais pronunciado */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra maior ao hover */
+}
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.response-container {
+    margin-top: 40px; /* Mais espaçamento */
+    padding: 25px; /* Mais padding */
+    background-color: var(--background-light); /* Fundo mais claro para a resposta */
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 10px var(--shadow-light); /* Sombra sutil para a caixa de resposta */
+}
+
+.response-content {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+}
+.response-content h1, .response-content h2, .response-content h3, .response-content h4, .response-content h5, .response-content h6 {
+    color: var(--primary-blue);
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    font-weight: 600;
+}
+.response-content strong {
+    font-weight: 700;
+    color: var(--primary-blue); /* Negrito pode ter um tom de azul para destaque */
+}
+.response-content ul, .response-content ol {
+    margin-left: 25px; /* Mais indentação */
+    padding-left: 0;
+    margin-bottom: 1.2em;
+}
+.response-content li {
+    margin-bottom: 0.6em;
+}
+
+.relevant-docs-section {
+    margin-top: 30px;
+    border-top: 1px solid var(--border-light);
+    padding-top: 25px;
+}
+.relevant-docs-section h3 {
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+.doc-item {
+    background-color: #f0f5fa; /* Tom de azul ainda mais claro para itens de documento */
+    padding: 15px 20px; /* Mais padding */
+    border-radius: 8px;
+    margin-bottom: 15px; /* Mais espaçamento entre itens */
+    border: 1px solid var(--border-light);
+    font-size: 0.98rem;
+    display: flex;
+    flex-direction: column; /* Permite empilhar Título, Slug, Relevância */
+    gap: 5px; /* Espaçamento entre as linhas */
+}
+.doc-item p {
+    margin: 0; /* Remover margem padrão dos parágrafos internos */
+    line-height: 1.4;
+    color: var(--text-dark);
+}
+.doc-item strong {
+    color: var(--primary-blue);
+}
+.doc-item span {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+}
+/* Estilo para links em geral */
+a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+a:hover {
+    color: var(--light-blue);
+    text-decoration: underline;
+}
+
+/* Estilos para mensagens de status e erro */
+.error {
+    color: var(--accent-red);
+    font-weight: 700;
+    text-align: center;
+    margin-top: 25px;
+}
+.loading {
+    text-align: center;
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin-top: 25px;
+}

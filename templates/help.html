@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo à Análise de Cobertura da Documentação - Segura - Ajuda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo(a) à análise de cobertura da documentação - Segura - 2025</h1>
+
+        <p>Este aplicativo foi projetado para ajudar você a identificar lacunas e oportunidades de melhoria na sua documentação técnica. Ele utiliza o poder da inteligência artificial para analisar o conteúdo existente e sugerir onde e como a cobertura pode ser expandida.</p>
+
+        <h2>Como funciona?</h2>
+        <p>O processo se divide em algumas etapas principais:</p>
+        <ol>
+            <li>
+                <h3>Pré-processamento da Documentação:</h3>
+                <ul>
+                    <li>Seus documentos Markdown são lidos e processados pelo script <strong>`extract_data_from_markdown.py`</strong>.</li>
+                    <li>Este script extrai informações importantes como o <strong>título</strong> e o <strong>slug</strong> (um identificador único) de cada documento, além de limpar o conteúdo para uso futuro. Os dados são salvos em um arquivo intermediário chamado <strong>`raw_docs.json`</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <h3>Geração de Embeddings:</h3>
+                <ul>
+                    <li>Em seguida, o script <strong>`generate_embeddings.py`</strong> entra em ação. Ele lê o <strong>`raw_docs.json`</strong>.</li>
+                    <li>Para cada documento, ele usa o modelo de IA do Google Gemini (<strong>`embedding-001`</strong>) para criar um "embedding" – uma representação numérica do texto. Pense nisso como um vetor de números que captura o significado semântico do seu documento.</li>
+                    <li>Esses documentos, agora com seus embeddings, são salvos no arquivo <strong>`processed_docs.json`</strong>, que é a base de dados para a análise.</li>
+                </ul>
+            </li>
+            <li>
+                <h3>Análise em Tempo Real (O Aplicativo):</h3>
+                <ul>
+                    <li>Quando você acessa o aplicativo e insere um tópico ou cola um texto, o <strong>`app.py`</strong> (nossa aplicação web Flask) recebe sua solicitação.</li>
+                    <li>Sua entrada também é convertida em um embedding usando o mesmo modelo do Gemini.</li>
+                    <li>O aplicativo compara o embedding da sua entrada com os embeddings de todos os documentos em <strong>`processed_docs.json`</strong> para encontrar os mais relevantes.</li>
+                    <li>Os documentos mais relevantes são então enviados para um modelo generativo maior do Gemini (<strong>`gemini-1.5-pro-latest`</strong>).</li>
+                    <li>O modelo do Gemini analisa esses documentos relevantes no contexto da sua pergunta e gera sugestões detalhadas sobre como melhorar ou expandir a cobertura da sua documentação.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>O que cada função faz?</h2>
+        <ul>
+            <li><strong>`extract_data_from_markdown.py`</strong>: Transforma seus arquivos Markdown brutos em dados estruturados (JSON), limpando o conteúdo e extraindo metadados essenciais.</li>
+            <li><strong>`generate_embeddings.py`</strong>: Converte o texto dos seus documentos em "linguagem de IA" (embeddings), permitindo que o aplicativo entenda o significado de cada documento.</li>
+            <li><strong>`app.py`</strong>: É o coração do aplicativo web. Ele gerencia a interface do usuário, faz a ponte com os modelos de IA, realiza a busca por documentos relevantes e exibe as sugestões de melhoria.</li>
+            <li><strong>Google Gemini (`embedding-001`)</strong>: Um modelo de IA que cria os embeddings, convertendo texto em vetores numéricos.</li>
+            <li><strong>Google Gemini (`gemini-1.5-pro-latest`)</strong>: Um modelo de IA avançado que entende o contexto fornecido e gera texto coerente, como as sugestões de melhoria para sua documentação.</li>
+        </ul>
+
+        <h2>Como funciona o Ranking de Relevância?</h2>
+        <div class="highlight-box">
+            <p>O ranking de relevância é baseado na <strong>Similaridade de Cosseno</strong>.</p>
+            <ul>
+                <li>Quando você digita sua pergunta ou tópico, um embedding é gerado para ela.</li>
+                <li>Este embedding (um vetor de números) é então comparado com os embeddings de <strong>TODOS</strong> os documentos na sua base de dados (o <strong>`processed_docs.json`</strong>).</li>
+                <li>A Similaridade de Cosseno mede o "ângulo" entre esses vetores.</li>
+                <li>
+                    Um valor próximo de <strong>100%</strong> (ou 1) significa que os vetores apontam na mesma direção, indicando que o documento é <strong>altamente relevante</strong> para sua pergunta.
+                </li>
+                <li>
+                    Um valor próximo de <strong>0%</strong> (ou 0) significa que os vetores são perpendiculares, indicando que o documento tem <strong>baixa ou nenhuma relevância</strong>.
+                </li>
+            </ul>
+            <p>Os documentos com a maior similaridade de cosseno são considerados os mais relevantes e são usados como contexto para o modelo Gemini gerar as sugestões de cobertura.</p>
+        </div>
+        
+        <p>Esperamos que esta ferramenta ajude você a aprimorar sua documentação de forma eficiente e inteligente!</p>
+
+        <center><a href="/"><h2>Voltar para a Análise de Cobertura</h2</a></center>
+    </div>
+</body>
+</html>
